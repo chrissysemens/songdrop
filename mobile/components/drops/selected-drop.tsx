@@ -8,7 +8,7 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Button } from "../button";
 import { useState } from "react";
-import { Audio } from "expo-av";
+import { Audio } from 'expo-av';
 
 type SelectedDropProps = {
   drop: Drop;
