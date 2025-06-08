@@ -41,6 +41,7 @@ export const useFetch = <T,>(
         }
 
         const jsonData: T = await res.json();
+        console.log('json', jsonData);
         if (isMounted) {
           setData(jsonData);
           setLoading(false);

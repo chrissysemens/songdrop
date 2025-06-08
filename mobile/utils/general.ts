@@ -28,3 +28,12 @@ export const daysToMilliSeconds = (days: number): number => {
 export const timeStampToDaysFromNow = (timestamp: number): number => {
   return Math.floor((timestamp - Date.now()) / (1000 * 60 * 60 * 24));
 };
+
+export const timeStampToFriendlyDate = (timestamp: number): string => {
+  const date = new Date(timestamp);
+  return date.toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+};

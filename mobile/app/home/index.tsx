@@ -22,17 +22,19 @@ import PinIcon from "../../svg/pin";
 import { useInteractions } from "../../state/interactions";
 import { DropTrack } from "../../features/drop-track/index";
 import { useLocation } from "../../state/location";
-import { getCityFromCoords } from "../../utils/location";
+import { getBoundingBox, getCityFromCoords } from "../../utils/location";
 import { useFirebase } from "../../hooks/useFirebase";
 import { Drop } from "../../types";
-import { QueryConstraint, where } from "firebase/firestore";
+import { QueryConstraint, orderBy, where, limit } from "firebase/firestore";
 import { daysToMilliSeconds } from "../../utils/general";
+import { SelectedDrop } from "../../components/drops/selected-drop";
 
 const Home = () => {
   const [loading, setLoading] = useState(true);
   const [activePill, setActivePill] = useState<string>("Near");
   const { location, setLocation, setCity } = useLocation();
   const [constraints, setConstraints] = useState<QueryConstraint[]>([]);
+  const [selectedDrop, setSelectedDrop] = useState<Drop | null>(null);
 
   const { openSheet } = useInteractions();
 
@@ -40,17 +42,63 @@ const Home = () => {
     {
       name: "Recent",
       onPress: () => {
-        setConstraints([where("created", ">=", Date.now() - daysToMilliSeconds(3))])
         setActivePill("Recent");
+        setConstraints([
+          where("created", ">=", Date.now() - daysToMilliSeconds(3)),
+        ]);
       },
     },
-    { name: "Near", onPress: () => setActivePill("Near") },
-    { name: "Most liked", onPress: () => setActivePill("Most liked") },
-    { name: "Top collected", onPress: () => setActivePill("Top collected") },
+    {
+      name: "Near",
+      onPress: () => {
+        setActivePill("Near");
+        if (!location || !location.latitude || !location.longitude) {
+          alert("No location"); // TODO: Better handling location
+        }
+        const box = getBoundingBox(
+          location!.latitude,
+          location!.longitude,
+          100
+        );
+        console.log(location);
+        console.log(box);
+        setConstraints([
+          where("latitude", ">=", box.minLat),
+          where("latitude", "<=", box.maxLat),
+          where("longitude", ">=", box.minLng),
+          where("longitude", "<=", box.maxLng),
+        ]);
+      },
+    },
+    {
+      name: "Most liked",
+      onPress: () => {
+        setActivePill("Most liked");
+        setConstraints([
+          where("likeCount", ">=", 1),
+          orderBy("likeCount"),
+          limit(10),
+        ]);
+      },
+    },
+    {
+      name: "Top collected",
+      onPress: () => {
+        setActivePill("Top collected");
+        setConstraints([
+          where("collectedCount", ">=", 1),
+          orderBy("collectedCount"),
+          limit(10),
+        ]);
+      },
+    },
     { name: "For you", onPress: () => setActivePill("For you") },
   ];
 
-  const { data: drops } = useFirebase<Drop>({ collectionName: "tracks", constraints });
+  const { data: drops } = useFirebase<Drop>({
+    collectionName: "tracks",
+    constraints,
+  });
 
   useEffect(() => {
     let isMounted = true;
@@ -111,6 +159,12 @@ const Home = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      {selectedDrop && (
+        <SelectedDrop
+          drop={selectedDrop}
+          onClosePress={() => setSelectedDrop(null)}
+        />
+      )}
       <MapView
         provider={PROVIDER_GOOGLE}
         style={styles.map}
@@ -126,6 +180,10 @@ const Home = () => {
             <MapMarker
               key={`marker-${drop.longitude}-${drop.latitude}-${drop.created}`}
               drop={drop}
+              onPress={(drop: Drop) => {
+                console.log(drop);
+                setSelectedDrop(drop);
+              }}
             />
           ))}
       </MapView>

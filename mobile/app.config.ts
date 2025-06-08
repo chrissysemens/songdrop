@@ -41,7 +41,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         data: [
           {
             scheme: "songdrop",
-            host: "callback",
           },
         ],
         category: ["BROWSABLE", "DEFAULT"],

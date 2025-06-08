@@ -13,7 +13,27 @@ export type Track = {
   thumbnail: string;
   duration: string;
   uri: string;
+  previewUrl: string;
 };
+
+export type Drop = {
+  userId: string;
+  track: Track | null;
+  privacy: Privacy;
+  genre: Genre;
+  category: Category;
+  emoji: string;
+  longitude: number;
+  latitude: number;
+  collectFrom: CollectFrom;
+  collectRadius: number;
+  expiryType: ExpiryType;
+  expiry: number;
+  created: number;
+  collectedCount: number;
+  likeCount: number;
+};
+
 
 export type LabelValueWithEmoji<T extends string = string> = {
   label: string;
@@ -81,21 +101,3 @@ export type Category =
   | "roadtrip"
   | "travel"
   | "vibe"; 
-
-export type Drop = {
-  userId: string;
-  track: Track | null;
-  privacy: Privacy;
-  genre: Genre;
-  category: Category;
-  emoji: string;
-  longitude: number;
-  latitude: number;
-  collectFrom: CollectFrom;
-  collectRadius: number;
-  expiryType: ExpiryType;
-  expiry: number;
-  created: number;
-  collectedCount: number;
-  likeCount: number;
-};

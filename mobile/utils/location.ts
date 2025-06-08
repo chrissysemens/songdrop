@@ -34,3 +34,17 @@ export const getCityFromCoords = async (latitude: number, longitude: number) => 
     return "Unknown";
   }
 };
+
+
+export const getBoundingBox = (lat: number, lng: number, distanceKm: number) => {
+  const earthRadiusKm = 6371;
+  const latDelta = distanceKm / earthRadiusKm;
+  const lngDelta = distanceKm / (earthRadiusKm * Math.cos((Math.PI * lat) / 180));
+
+  return {
+    minLat: lat - latDelta,
+    maxLat: lat + latDelta,
+    minLng: lng - lngDelta,
+    maxLng: lng + lngDelta,
+  };
+}

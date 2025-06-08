@@ -20,8 +20,6 @@ const Shutter = () => {
   const insets = useSafeAreaInsets();
   const { sheet, closeSheet } = useInteractions();
 
-  const topOffset = insets.top + 0;
-
   useEffect(() => {
     height.value = withTiming(sheet.isOpen ? TARGET_HEIGHT : 0, {
       duration: ANIMATION_DURATION,
@@ -43,7 +41,7 @@ const Shutter = () => {
 
   return (
     <>
-      <Animated.View style={[styles.shutter, shutterStyle, { top: topOffset }]}>
+      <Animated.View style={[styles.shutter, shutterStyle]}>
         {sheet.content}
         <View style={styles.grabHandleContainer}>
           <View style={styles.grabHandle} />

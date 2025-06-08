@@ -26,7 +26,6 @@ import { LocationPreview } from "./location-preview";
 import { TrackPreview } from "./track-preview";
 import { daysToMilliSeconds } from "../../utils/general";
 import categories from "../../app/data/categories";
-import { QueryConstraint } from "firebase/firestore";
 
 const DropTrack = () => {
   const [tracks, setTracks] = useState<Array<Track>>([]);
@@ -163,6 +162,7 @@ export { DropTrack };
 const styles = StyleSheet.create({
   drop: {
     padding: 40,
+    paddingTop: 20,
     display: "flex",
     flex: 1,
   },

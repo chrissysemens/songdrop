@@ -1,5 +1,5 @@
-import { forwardRef, useCallback, useEffect, useMemo, useState} from "react";
-import { Keyboard, TextInput, View, StyleSheet  } from "react-native";
+import { forwardRef, useCallback, useEffect, useMemo, useState } from "react";
+import { Keyboard, TextInput, View, StyleSheet } from "react-native";
 import { Track } from "../../types";
 import useAuthState from "../../state/spotify-auth";
 import { useFetch } from "../../hooks/useFetch";
@@ -27,21 +27,17 @@ const SelectTrack = forwardRef<TextInput, TrackProps>(
     const [searchUrl, setSearchUrl] = useState<string>("");
     const { token } = useAuthState();
 
-    useFetch(
-      searchUrl,
-      token ?? "",
-      (results: any) => {
-        const tracks = results.tracks?.items.map((item: any) => ({
-          id: item.id,
-          title: item.name,
-          artist: item.artists.map((a: any) => a.name).join(", "),
-          thumbnail: item.album.images[2]?.url,
-          duration: millisecondsToMinutesAndSeconds(item.duration_ms),
-        }));
-        console.log('tracks', tracks);
-        setTracks(tracks);
-      }
-    );
+    useFetch(searchUrl, token ?? "", (results: any) => {
+      const tracks: Array<Track> = results.tracks?.items.map((item: any) => ({
+        id: item.id,
+        title: item.name,
+        artist: item.artists.map((a: any) => a.name).join(", "),
+        thumbnail: item.album.images[2]?.url,
+        duration: millisecondsToMinutesAndSeconds(item.duration_ms),
+        previewUrl: item.preview_url,
+      }));
+      setTracks(tracks);
+    });
 
     const searchSong = useCallback((text: string) => {
       Keyboard.dismiss();
@@ -123,4 +119,3 @@ const styles = StyleSheet.create({
 });
 
 export { SelectTrack };
-

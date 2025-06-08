@@ -5,13 +5,14 @@ import { useEffect, useState } from "react";
 
 type MarkerProps = {
   drop: Drop;
+  onPress: (drop: Drop) => void; 
 };
 
-const MapMarker = ({ drop }: MarkerProps) => {
-    const [ready, setReady] = useState(false);
+const MapMarker = ({ drop, onPress }: MarkerProps) => {
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setReady(true), 500); // Wait 0.5s
+    const timer = setTimeout(() => setReady(true), 500);
     return () => clearTimeout(timer);
   }, []);
   return (
@@ -20,9 +21,8 @@ const MapMarker = ({ drop }: MarkerProps) => {
         latitude: drop.latitude,
         longitude: drop.longitude,
       }}
-        title={drop.track!.title}
-        description={drop.track!.artist}
         tracksViewChanges={!ready}
+        onPress={() => onPress(drop)}
     >
       <View style={styles.marker}>
         <Text style={styles.emoji}>{drop.emoji}</Text>
