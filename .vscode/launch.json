@@ -1,0 +1,19 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run Express Server",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/server/server.js",
+      "envFile": "${workspaceFolder}/server/.env",
+      "console": "integratedTerminal"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Run Full Dev",
+      "configurations": ["Run Express Server"]
+    }
+  ]
+}
