@@ -8,7 +8,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   icon: "./assets/icon.png",
   userInterfaceStyle: "light",
   scheme: "songdrop",
-  newArchEnabled: false,
+  newArchEnabled: true,
   splash: {
     image: "./assets/splash-icon.png",
     resizeMode: "contain",
@@ -32,7 +32,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     jsEngine: "hermes",
     config: {
       googleMaps: {
-        apiKey: process.env.GOOGLE_MAPS_API_KEY,
+        apiKey: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY,
       },
     },
     intentFilters: [
@@ -50,7 +50,26 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   web: {
     favicon: "./assets/favicon.png",
   },
-  plugins: ["expo-router", "expo-web-browser", "expo-secure-store"],
+  plugins: [
+    "expo-router",
+    "expo-web-browser",
+    "expo-secure-store",
+    [
+      "expo-audio",
+      {
+        microphonePermission:
+          "Allow $(PRODUCT_NAME) to access your microphone.",
+      },
+    ],
+    [
+      "@sentry/react-native/expo",
+      {
+        url: "https://sentry.io/",
+        project: "react-native",
+        organization: "chrissy-semens",
+      },
+    ],
+  ],
   extra: {
     router: {},
     eas: {

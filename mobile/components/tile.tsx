@@ -1,4 +1,4 @@
-import { View, Text, ColorValue, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, ColorValue, StyleSheet, TouchableOpacity, Dimensions } from "react-native";
 import type { SvgProps } from "react-native-svg";
 import { FC } from "react";
 
@@ -10,6 +10,9 @@ export type TileProps = {
   colour: ColorValue;
   onPress: () => void;
 };
+
+const screenWidth = Dimensions.get("window").width;
+const isTablet = screenWidth >= 768;
 
 const Tile = ({ text, Icon, height, width, colour, onPress }: TileProps) => {
   return (
@@ -28,7 +31,7 @@ const Tile = ({ text, Icon, height, width, colour, onPress }: TileProps) => {
 
 const styles = StyleSheet.create({
   tile: {
-    margin: 15,
+    margin: isTablet ? 15 : 10,
     borderWidth: 2,
     padding: 20,
     borderRadius: 10,
@@ -36,7 +39,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   text: {
-    fontSize: 24,
+    fontSize: isTablet ? 24 : 17,
     fontWeight: "bold",
     marginBottom: 20,
   },

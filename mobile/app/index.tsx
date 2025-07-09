@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import * as WebBrowser from "expo-web-browser";
 import { makeRedirectUri } from "expo-auth-session";
 import { colours } from "../colours";
 import useAuthState from "../state/spotify-auth";
 import { useRouter } from "expo-router";
+import * as Linking from 'expo-linking';
 
 const Index = () => {
   const { token, refreshToken, expiry, setExpiry, setToken } = useAuthState();
@@ -17,6 +23,7 @@ const Index = () => {
           `https://europe-west2-songdrop-569af.cloudfunctions.net/api/refresh?refresh_token=${refreshToken}`
         );
         const data = await res.json();
+        console.log('res', res);
 
         if (data.access_token && data.expires_in) {
           setToken(data.access_token);
@@ -30,6 +37,7 @@ const Index = () => {
         console.error("Error refreshing token:", err);
       }
     };
+    console.log(token);
     if (token && expiry && expiry > Date.now()) {
       setTimeout(() => router.replace("/home"), 500);
     }
@@ -40,15 +48,11 @@ const Index = () => {
   }, [token, refreshToken, expiry]);
 
   const handleLogin = async () => {
-    const redirectUri = makeRedirectUri({
-      scheme: "songdrop",
-      path: "callback",
-    });
-
+    const redirectUri = Linking.createURL("callback");
     const loginUrl = `https://europe-west2-songdrop-569af.cloudfunctions.net/api/login?redirect_uri=${encodeURIComponent(
       redirectUri
     )}`;
-    await WebBrowser.openAuthSessionAsync(loginUrl, redirectUri);
+    Linking.openURL(loginUrl);
   };
 
   return (

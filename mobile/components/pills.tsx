@@ -4,6 +4,7 @@ import {
   View,
   Text,
   StyleSheet,
+  Dimensions,
 } from "react-native";
 import { colours } from "../colours";
 
@@ -16,6 +17,9 @@ type PillsProps = {
   pills: Array<Pill>;
   activePill: string;
 };
+
+const screenWidth = Dimensions.get("window").width;
+
 
 const Pills = ({ pills, activePill }: PillsProps) => {
   return (
@@ -40,6 +44,8 @@ const Pills = ({ pills, activePill }: PillsProps) => {
 
 const styles = StyleSheet.create({
   container: {
+    maxWidth: screenWidth,
+    alignSelf: 'stretch',
     display: "flex",
     flexDirection: "row",
     marginLeft: "auto",
@@ -49,17 +55,17 @@ const styles = StyleSheet.create({
   },
   listContent: {
     display: "flex",
-    marginLeft: "auto",
-    marginRight: "auto",
-    paddingHorizontal: 30,
+    flexGrow: 1,
+    paddingHorizontal: 10,
     gap: 15,
+    maxWidth: 1000,
   },
   pill: {
     backgroundColor: colours.surface,
     borderRadius: 20,
     paddingVertical: 8,
-    paddingHorizontal: 16,
-    marginHorizontal: 5,
+    paddingHorizontal: 15,
+    gap: 5,
     borderWidth: 1,
     borderColor: colours.primary,
   },

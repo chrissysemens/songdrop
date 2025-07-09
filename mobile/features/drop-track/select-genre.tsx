@@ -1,7 +1,8 @@
-import genres, { Genre } from "../../app/data/genres";
+import { Genre } from "../../types";
 import { Dropdown } from "../../components/dropdown";
 import { FormField } from "../../components/forms/form-field-wrapper";
 import { FormLabel } from "../../components/forms/form-label";
+import genres from "../../app/data/genres";
 
 type SelectGenreProps = {
   genre: Genre;

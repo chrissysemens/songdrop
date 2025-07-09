@@ -34,10 +34,11 @@ const SetExpiry = ({
             value={expiryType as string}
             options={[
               { label: "Never", value: "never" },
-              { label: "After duration", value: "duration" },
+              { label: "Duration", value: "duration" },
             ]}
             open={dropdownOpen}
             onOpen={(open: boolean) => setDropDownOpen(open)}
+            style={styles.blockDropdown}
           />
           {expiryType !== "never" && (
             <>
@@ -62,18 +63,18 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         borderRadius: 6,
       },
-      blockDropdown: {
-        flex: 1,
-        maxWidth: 250,
-      },
-      blockInput: {
-        flex: 1,
-        maxWidth: 80,
-        marginLeft: 20,
-        marginRight: 10,
-        textAlign: "center",
-        alignSelf: "flex-start",
-      },
+    blockDropdown: {
+      flex: 1,
+      minWidth: 200,
+      maxWidth: 200,
+    },
+    blockInput: {
+      flex: 1,
+      marginLeft: 20,
+      marginRight: 10,
+      textAlign: "center",
+      alignSelf: "flex-start",
+    },
       blockLabel: {
         color: colours.text,
         display: "flex",

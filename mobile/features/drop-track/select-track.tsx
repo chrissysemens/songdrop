@@ -83,6 +83,7 @@ const SelectTrack = forwardRef<TextInput, TrackProps>(
           ) : (
             <Input
               id="song"
+              style={styles.searchInput}
               icon={<FontAwesome name="search" size={16} color="#888" />}
               ref={ref}
               placeholder="Search spotify songs"
@@ -109,6 +110,9 @@ const SelectTrack = forwardRef<TextInput, TrackProps>(
 const styles = StyleSheet.create({
   song: {
     position: "relative",
+  },
+  searchInput: {
+    height: 55,
   },
   results: {
     position: "absolute",

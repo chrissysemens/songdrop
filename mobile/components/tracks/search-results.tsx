@@ -1,4 +1,4 @@
-import { View, StyleSheet, FlatList } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 import { colours } from "../../colours";
 import { Track } from "../../types";
 import { TrackResult } from "./search-result";
@@ -8,30 +8,38 @@ type Props = {
   onSelect: (track: Track) => void;
 };
 
-export const TrackResults = ({ tracks, onSelect }: Props) => {
+export const TrackResults = ({ tracks, onSelect}: Props) => {
   return (
-    <View style={styles.results}>
+    <View style={styles.container}>
       <FlatList
-        style={styles.list}
         data={tracks}
         renderItem={({ item }) => (
           <TrackResult track={item} onPress={onSelect} />
         )}
-        keyExtractor={(item) => `${item.id}`}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={styles.content}
+        keyboardShouldPersistTaps="handled"
+        scrollEnabled
+        nestedScrollEnabled
+        ItemSeparatorComponent={() => <View style={styles.separator} />}
       />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  results: {
-    display: "flex",
-    flex: 1,
+  container: {
+    marginTop: 25,
+    maxHeight: 375,
     backgroundColor: colours.sheet,
-    borderWidth: 1,
-    marginTop: 30,
+    borderRadius: 8,
+    overflow: "hidden",
   },
-  list: {
-    flexGrow: 0,
+  content: {
+    paddingVertical: 4,
+  },
+  separator: {
+    height: 1,
+    backgroundColor: '#333',
   },
 });

@@ -4,7 +4,7 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  TouchableWithoutFeedback,
+  Pressable
 } from "react-native";
 import { Track } from "../../types";
 import { colours } from "../../colours";
@@ -17,7 +17,7 @@ type Props = {
 };
 const TrackResult = ({ track, onPress, onRemove }: Props) => {
   return (
-    <TouchableWithoutFeedback onPressIn={() => onPress && onPress(track)}>
+    <Pressable onPress={() => onPress && onPress(track)}>
       <View style={styles.result}>
         <View>
           <Image src={track.thumbnail} height={50} width={50} />
@@ -37,7 +37,7 @@ const TrackResult = ({ track, onPress, onRemove }: Props) => {
           </View>
         )}
       </View>
-    </TouchableWithoutFeedback>
+    </Pressable>
   );
 };
 

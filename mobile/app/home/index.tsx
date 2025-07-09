@@ -29,6 +29,9 @@ import { QueryConstraint, orderBy, where, limit } from "firebase/firestore";
 import { daysToMilliSeconds } from "../../utils/general";
 import { SelectedDrop } from "../../components/drops/selected-drop";
 
+const screenWidth = Dimensions.get('window').width;
+const isTablet = screenWidth >= 768;
+
 const Home = () => {
   const [loading, setLoading] = useState(true);
   const [activePill, setActivePill] = useState<string>("Near");
@@ -60,8 +63,7 @@ const Home = () => {
           location!.longitude,
           100
         );
-        console.log(location);
-        console.log(box);
+
         setConstraints([
           where("latitude", ">=", box.minLat),
           where("latitude", "<=", box.maxLat),
@@ -159,12 +161,11 @@ const Home = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {selectedDrop && (
-        <SelectedDrop
-          drop={selectedDrop}
-          onClosePress={() => setSelectedDrop(null)}
-        />
-      )}
+      <SelectedDrop
+        drop={selectedDrop}
+        onClosePress={() => setSelectedDrop(null)}
+      />
+      <View style={styles.mapView}>
       <MapView
         provider={PROVIDER_GOOGLE}
         style={styles.map}
@@ -181,12 +182,13 @@ const Home = () => {
               key={`marker-${drop.longitude}-${drop.latitude}-${drop.created}`}
               drop={drop}
               onPress={(drop: Drop) => {
-                console.log(drop);
+
                 setSelectedDrop(drop);
               }}
             />
           ))}
       </MapView>
+      </View>
       <View style={styles.pills}>
         <Pills pills={pills} activePill={activePill} />
       </View>
@@ -194,8 +196,8 @@ const Home = () => {
         tiles={[
           {
             text: "Drop a track",
-            height: 204,
-            width: 204,
+            height: isTablet ? 200 : 150,
+            width: isTablet ? 200 : 150,
             colour: colours.primary,
             Icon: PinIcon,
             onPress: () => {
@@ -207,40 +209,40 @@ const Home = () => {
           },
           {
             text: "Collected",
-            height: 200,
-            width: 200,
+            height: isTablet ? 200 : 150,
+            width: isTablet ? 200 : 150,
             colour: colours.primary,
             Icon: VinylIcon,
             onPress: () => console.log("collected"),
           },
           {
             text: "Drops",
-            height: 200,
-            width: 200,
+            height: isTablet ? 200 : 150,
+            width: isTablet ? 200 : 150,
             colour: colours.primary,
             Icon: DropIcon,
             onPress: () => console.log("drop"),
           },
           {
             text: "Leaderboard",
-            height: 200,
-            width: 200,
+            height: isTablet ? 200 : 150,
+            width: isTablet ? 200 : 150,
             colour: colours.primary,
             Icon: LeagueIcon,
             onPress: () => console.log("drop"),
           },
           {
             text: "Profile",
-            height: 200,
-            width: 200,
+            height: isTablet ? 200 : 150,
+            width: isTablet ? 200 : 150,
             colour: colours.primary,
             Icon: ProfileIcon,
             onPress: () => console.log("drop"),
           },
           {
             text: "Settings",
-            height: 204,
-            width: 204,
+            height: isTablet ? 200 : 150,
+            width: isTablet ? 200 : 150,
             colour: colours.primary,
             Icon: SettingsIcon,
             onPress: () => console.log("drop"),
@@ -256,10 +258,21 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colours.background,
   },
+  mapView: {
+        height: isTablet ? 500 : 300,
+        position: 'relative',
+        zIndex: 0,
+  },
   map: {
     borderWidth: 1,
-    width: Dimensions.get("window").width,
-    height: 500,
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    right: 0,
+    left: 0,
+    zIndex: 1,
   },
   pills: {
     marginTop: 10,

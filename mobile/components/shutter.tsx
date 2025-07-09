@@ -18,7 +18,7 @@ const Shutter = () => {
   const height = useSharedValue(0);
   const overlayOpacity = useSharedValue(0);
   const insets = useSafeAreaInsets();
-  const { sheet, closeSheet } = useInteractions();
+  const { sheet } = useInteractions();
 
   useEffect(() => {
     height.value = withTiming(sheet.isOpen ? TARGET_HEIGHT : 0, {
@@ -33,27 +33,19 @@ const Shutter = () => {
     height: height.value,
   }));
 
-  /*const gesture = Gesture.Pan().onEnd((e) => {
-    if (e.translationY < -50 || e.velocityY < -500) {
-      runOnJS(closeSheet)();
-    }
-  });*/
-
   return (
-    <>
-      <Animated.View style={[styles.shutter, shutterStyle]}>
-        {sheet.content}
-        <View style={styles.grabHandleContainer}>
-          <View style={styles.grabHandle} />
-        </View>
-      </Animated.View>
-    </>
+        <Animated.View style={[styles.shutter, shutterStyle]}>
+          {sheet.content}
+          <View style={styles.grabHandleContainer}>
+            <View style={styles.grabHandle} />
+          </View>
+        </Animated.View>
   );
 };
 
 const styles = StyleSheet.create({
   shutter: {
-    backgroundColor: colours.sheet,
+    backgroundColor: colours.background,
     zIndex: 2,
     position: "absolute",
     left: 0,

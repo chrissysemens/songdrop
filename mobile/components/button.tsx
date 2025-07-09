@@ -40,7 +40,7 @@ const Button = ({
 
 const styles = StyleSheet.create({
   button: {
-    width: 180,
+    width: 160,
     height: 60,
     borderRadius: 12,
     justifyContent: "center",

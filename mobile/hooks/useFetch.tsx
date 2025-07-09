@@ -21,7 +21,6 @@ export const useFetch = <T,>(
     let isMounted = true;
 
     const fetchData = async () => {
-      console.log('in fetch');
       try {
         setLoading(true);
         setHasError(false);
@@ -34,14 +33,11 @@ export const useFetch = <T,>(
           },
         });
 
-        console.log('res', res);
-
         if (!res.ok) {
           throw new Error(res.statusText);
         }
 
         const jsonData: T = await res.json();
-        console.log('json', jsonData);
         if (isMounted) {
           setData(jsonData);
           setLoading(false);

@@ -30,6 +30,7 @@ export type Drop = {
   expiryType: ExpiryType;
   expiry: number;
   created: number;
+  notes: string;
   collectedCount: number;
   likeCount: number;
 };

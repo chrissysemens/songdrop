@@ -62,7 +62,8 @@ const styles = StyleSheet.create({
   },
   blockDropdown: {
     flex: 1,
-    maxWidth: 250,
+    minWidth: 200,
+    maxWidth: 200,
   },
   blockInput: {
     flex: 1,

@@ -13,13 +13,12 @@ export default function AuthCallback() {
     const tryHandleAuth = async () => {
       if (hasHandled) return;
 
-      let access_token = localParams?.access_token;
-      let refresh_token = localParams?.refresh_token;
-      let expires_in = localParams?.expires_in;
+      let access_token = localParams?.access_token as string | undefined;
+      let refresh_token = localParams?.refresh_token as string | undefined;
+      let expires_in = localParams?.expires_in as string | undefined;
 
-      if (access_token && expires_in) {
-        console.log("✅ Received token from local params:", access_token);
-      } else {
+      // If missing, try fallback from initial URL
+      if (!access_token || !expires_in) {
         const url = await Linking.getInitialURL();
         console.log("🔍 Fallback to Linking.getInitialURL():", url);
         if (!url) return;
@@ -28,18 +27,25 @@ export default function AuthCallback() {
         console.log("Parsed from initial URL:", parsed);
 
         const query = parsed.queryParams ?? {};
-        access_token = query.access_token as string;
-        refresh_token = query.refresh_token as string;
-        expires_in = query.expires_in as string;
+        const hashParams = parsed.fragment
+          ? Object.fromEntries(new URLSearchParams(parsed.fragment))
+          : {};
+
+        access_token = (query.access_token || hashParams.access_token) as string;
+        refresh_token = (query.refresh_token || hashParams.refresh_token) as string;
+        expires_in = (query.expires_in || hashParams.expires_in) as string;
       }
 
+      // Final check
       if (access_token && expires_in) {
         setHasHandled(true);
         console.log("✅ Final token used:", access_token);
-        setToken(access_token as string);
-        setRefreshToken(refresh_token ? (refresh_token as string) : null);
-        setExpiry(expires_in as string);
+        setToken(access_token);
+        setRefreshToken(refresh_token || null);
+        setExpiry(expires_in);
         router.replace("/home");
+      } else {
+        console.warn("⚠️ No access token or expiry found in callback.");
       }
     };
 
